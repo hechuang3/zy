@@ -14,11 +14,21 @@ public abstract class BaseActivity<T extends BasePresenter>extends AppCompatActi
         setContentView(getLayoutID());
         if(per==null){
             per=getPer();
-        }
+            per.attachView(this);
 
+        }
+        initData();
+        initView();
     }
     protected abstract void initView();
     protected abstract void initData();
     protected abstract int getLayoutID();
     public abstract T getPer();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(per!=null){
+            per.detachView();
+        }
+    }
 }
