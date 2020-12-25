@@ -28,7 +28,10 @@ public class RetrofitUtils implements NetWork{
     public static RetrofitUtils getInstance(){
         if(retrofitUtils==null){
             synchronized (RetrofitUtils.class){
-                retrofitUtils=new RetrofitUtils();
+                if(retrofitUtils==null){
+                    retrofitUtils=new RetrofitUtils();
+                }
+
             }
         }
         return retrofitUtils;

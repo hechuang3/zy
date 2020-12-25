@@ -3,6 +3,7 @@ package com.example.week.view;
 
 
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
@@ -10,10 +11,13 @@ import android.widget.RadioGroup;
 
 import com.example.week.R;
 import com.example.week.base.BaseActivity;
+import com.example.week.bean.Bean;
 import com.example.week.contract.HomeContract;
 import com.example.week.fragment.HomeFragment;
 import com.example.week.fragment.ListFragment;
 import com.example.week.presenter.HomePresenter;
+
+import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity<HomePresenter> implements HomeContract.IMainView, View.OnClickListener {
 
@@ -27,10 +31,12 @@ public class MainActivity extends BaseActivity<HomePresenter> implements HomeCon
     private android.widget.RadioButton btn5;
     private HomeFragment homeFragment;
     private ListFragment listFragment;
+    private ArrayList<Bean.DataDTO.BannerDTO> bannerDTOS;
 
     @Override
     protected void initView() {
         frame = (FrameLayout) findViewById(R.id.frame);
+        bannerDTOS = new ArrayList<>();
         rg = (RadioGroup) findViewById(R.id.rg);
         btn1 = (RadioButton) findViewById(R.id.btn1);
         btn2 = (RadioButton) findViewById(R.id.btn2);
@@ -92,5 +98,10 @@ public class MainActivity extends BaseActivity<HomePresenter> implements HomeCon
 
                 break;
         }
+    }
+
+    @Override
+    public void onSuccess(Bean bean) {
+
     }
 }
