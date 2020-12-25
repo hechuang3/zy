@@ -2,39 +2,25 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:orientation="horizontal"
-    android:layout_height="60dp">
+    android:layout_height="80dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:id="@+id/single_three_img"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="居家"
+            android:gravity="center"
+            android:layout_marginLeft="13dp"
+            android:id="@+id/single_three_tv"/>
+    </LinearLayout>
 
-<Button
-    android:layout_width="60dp"
-    android:layout_height="60dp"
-    android:id="@+id/btn_jj"
-    android:layout_weight="1"
-    android:background="@drawable/jj"/>
 
-    <Button
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/btn_cc"
-        android:layout_weight="1"
-        android:background="@drawable/cc"/>
-    <Button
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/btn_pj"
-        android:layout_weight="1"
-        android:background="@drawable/pj"/>
-    <Button
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/btn_fz"
-        android:layout_weight="1"
-        android:background="@drawable/fz"/>
-    <Button
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/btn_zq"
-        android:layout_weight="1"
-        android:background="@drawable/zq"/>
 </LinearLayout>

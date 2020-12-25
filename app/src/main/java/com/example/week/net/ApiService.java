@@ -6,6 +6,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Url;
 
 public interface ApiService {
-        @GET
+    @GET
     Observable<ResponseBody>getData(@Url String surl);
 }
