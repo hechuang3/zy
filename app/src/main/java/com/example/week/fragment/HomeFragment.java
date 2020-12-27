@@ -17,7 +17,9 @@ import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.example.week.R;
+import com.example.week.adapter.GridLayoutAdapter;
 import com.example.week.adapter.SingleAdapter;
+import com.example.week.adapter.SingleFourAdapter;
 import com.example.week.adapter.SingleThreeAdapter;
 import com.example.week.adapter.SingleTwoAdapter;
 import com.example.week.base.BaseActivity;
@@ -37,6 +39,8 @@ public class HomeFragment extends BaseFragment<HomePresenter>implements HomeCont
     private SingleTwoAdapter singleTwoAdapter;
     private ArrayList<Bean.DataDTO.ChannelDTO> channelDTOS;
     private SingleThreeAdapter singleThreeAdapter;
+    private ArrayList<Bean.DataDTO.NewGoodsListDTO> newGoodsListDTOS;
+    private GridLayoutAdapter gridLayoutAdapter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -80,16 +84,34 @@ public class HomeFragment extends BaseFragment<HomePresenter>implements HomeCont
         gridLayoutHelper.setHGap(20);// 控制子元素之间的水平间距
         gridLayoutHelper.setAutoExpand(false);//是否自动填充空白区域
         gridLayoutHelper.setSpanCount(5);// 设置每行多少个网格
-
-
         singleThreeAdapter = new SingleThreeAdapter(channelDTOS, getContext(), gridLayoutHelper);
 
+        //第四行
+        SingleLayoutHelper singleFourHelper = new SingleLayoutHelper();
+        SingleFourAdapter singleFourAdapter = new SingleFourAdapter(singleFourHelper);
+
+        //第五行
+        newGoodsListDTOS = new ArrayList<>();
+        GridLayoutHelper FivegridLayoutHelper = new GridLayoutHelper(4);
+        FivegridLayoutHelper.setItemCount(4);
+        FivegridLayoutHelper.setPadding(20,20,20,20);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+        FivegridLayoutHelper.setMargin(20,20,20,20);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+        FivegridLayoutHelper.setAspectRatio(2);// 设置设置布局内每行布局的宽与高的
+        // gridLayoutHelper特有属性（下面会详细说明）
+        FivegridLayoutHelper.setWeights(new float[]{50,50});//设置每行中 每个网格宽度 占 每行总宽度 的比例
+        FivegridLayoutHelper.setVGap(20);// 控制子元素之间的垂直间距
+        FivegridLayoutHelper.setHGap(20);// 控制子元素之间的水平间距
+        FivegridLayoutHelper.setAutoExpand(false);//是否自动填充空白区域
+        FivegridLayoutHelper.setSpanCount(2);// 设置每行多少个网格
+        gridLayoutAdapter = new GridLayoutAdapter(newGoodsListDTOS,getContext(),FivegridLayoutHelper);
 
         //设置适配器
-        DelegateAdapter delegateAdapter = new DelegateAdapter(virtualLayoutManager, true);
+        DelegateAdapter delegateAdapter = new DelegateAdapter(virtualLayoutManager, false);
         delegateAdapter.addAdapter(singleAdapter);
         delegateAdapter.addAdapter(singleTwoAdapter);
         delegateAdapter.addAdapter(singleThreeAdapter);
+        delegateAdapter.addAdapter(singleFourAdapter);
+        delegateAdapter.addAdapter(gridLayoutAdapter);
         rel.setLayoutManager(virtualLayoutManager);
         rel.setAdapter(delegateAdapter);
     }
@@ -113,8 +135,10 @@ public class HomeFragment extends BaseFragment<HomePresenter>implements HomeCont
     public void onSuccess(Bean bean) {
         dtos.addAll(bean.getData().getBanner());
         channelDTOS.addAll(bean.getData().getChannel());
+        newGoodsListDTOS.addAll(bean.getData().getNewGoodsList());
        // Toast.makeText(getContext(), dtos.get(0).getImage_url().toString(), Toast.LENGTH_SHORT).show();
         singleTwoAdapter.notifyDataSetChanged();
         singleThreeAdapter.notifyDataSetChanged();
+        gridLayoutAdapter.notifyDataSetChanged();
     }
 }

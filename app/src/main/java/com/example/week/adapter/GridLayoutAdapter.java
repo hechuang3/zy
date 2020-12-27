@@ -13,19 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.LayoutHelper;
 import com.alibaba.android.vlayout.layout.GridLayoutHelper;
-import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.bumptech.glide.Glide;
 import com.example.week.R;
 import com.example.week.bean.Bean;
 
 import java.util.ArrayList;
 
-public class SingleThreeAdapter extends DelegateAdapter.Adapter {
-    private ArrayList<Bean.DataDTO.ChannelDTO>list;
+public class GridLayoutAdapter extends DelegateAdapter.Adapter {
+    private ArrayList<Bean.DataDTO.NewGoodsListDTO> list;
     private Context context;
-   private GridLayoutHelper gridLayoutHelper;
+    private GridLayoutHelper gridLayoutHelper;
 
-    public SingleThreeAdapter(ArrayList<Bean.DataDTO.ChannelDTO> list, Context context, GridLayoutHelper gridLayoutHelper) {
+    public GridLayoutAdapter(ArrayList<Bean.DataDTO.NewGoodsListDTO> list, Context context, GridLayoutHelper gridLayoutHelper) {
         this.list = list;
         this.context = context;
         this.gridLayoutHelper = gridLayoutHelper;
@@ -39,15 +38,16 @@ public class SingleThreeAdapter extends DelegateAdapter.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_three, parent, false);
-        return new SingleHolder(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_five, parent, false);
+        return new GridHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        SingleHolder singleHolder= (SingleHolder) holder;
-        singleHolder.tv.setText(list.get(position).getName());
-        Glide.with(context).load(list.get(position).getIcon_url()).into(singleHolder.iv);
+        GridHolder gridHolder = (GridHolder) holder;
+        Glide.with(context).load(list.get(position).getList_pic_url()).into(gridHolder.iv);
+        gridHolder.name.setText(list.get(position).getName());
+        gridHolder.pic.setText("$" + list.get(position).getRetail_price());
     }
 
     @Override
@@ -55,13 +55,17 @@ public class SingleThreeAdapter extends DelegateAdapter.Adapter {
         return list.size();
     }
 
-    class SingleHolder extends RecyclerView.ViewHolder {
+    class GridHolder extends RecyclerView.ViewHolder {
         private ImageView iv;
-        private TextView tv;
-        public SingleHolder(@NonNull View itemView) {
+        private TextView name;
+        private TextView pic;
+
+        public GridHolder(@NonNull View itemView) {
             super(itemView);
-            iv=itemView.findViewById(R.id.single_three_img);
-            tv=itemView.findViewById(R.id.single_three_tv);
+            iv = itemView.findViewById(R.id.single_five_urlimage);
+            name = itemView.findViewById(R.id.single_five_name);
+            pic = itemView.findViewById(R.id.single_five_price);
+
         }
     }
 }
