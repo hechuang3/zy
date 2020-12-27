@@ -15,13 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.alibaba.android.vlayout.layout.GridLayoutHelper;
+import com.alibaba.android.vlayout.layout.LinearLayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.example.week.R;
 import com.example.week.adapter.GridLayoutAdapter;
+import com.example.week.adapter.GridLayoutSixAdapter;
+import com.example.week.adapter.HorizontalAdapter;
 import com.example.week.adapter.SingleAdapter;
 import com.example.week.adapter.SingleFourAdapter;
+import com.example.week.adapter.SingleSixAdapter;
 import com.example.week.adapter.SingleThreeAdapter;
 import com.example.week.adapter.SingleTwoAdapter;
+import com.example.week.adapter.TitleAdapter;
 import com.example.week.base.BaseActivity;
 import com.example.week.base.BaseFragment;
 import com.example.week.bean.Bean;
@@ -41,6 +46,10 @@ public class HomeFragment extends BaseFragment<HomePresenter>implements HomeCont
     private SingleThreeAdapter singleThreeAdapter;
     private ArrayList<Bean.DataDTO.NewGoodsListDTO> newGoodsListDTOS;
     private GridLayoutAdapter gridLayoutAdapter;
+    private ArrayList<Bean.DataDTO.HotGoodsListDTO> hotGoodsListDTOS;
+    private GridLayoutSixAdapter gridLayoutSixAdapter;
+    private ArrayList<Bean.DataDTO.TopicListDTO> topicListDTOS;
+    private HorizontalAdapter horizontalAdapter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -105,6 +114,31 @@ public class HomeFragment extends BaseFragment<HomePresenter>implements HomeCont
         FivegridLayoutHelper.setSpanCount(2);// 设置每行多少个网格
         gridLayoutAdapter = new GridLayoutAdapter(newGoodsListDTOS,getContext(),FivegridLayoutHelper);
 
+        //人气推荐
+        SingleLayoutHelper SixsingleLayoutHelper = new SingleLayoutHelper();
+        SingleSixAdapter singleSixAdapter = new SingleSixAdapter(SixsingleLayoutHelper);
+        //第六行
+        hotGoodsListDTOS = new ArrayList<>();
+        GridLayoutHelper SixgridLayoutHelper = new GridLayoutHelper(3);
+        SixgridLayoutHelper.setItemCount(3);
+        SixgridLayoutHelper.setPadding(20,20,20,20);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
+        SixgridLayoutHelper.setMargin(20,20,20,20);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
+        //SixgridLayoutHelper.setAspectRatio(2);// 设置设置布局内每行布局的宽与高的
+        // gridLayoutHelper特有属性（下面会详细说明）
+        //SixgridLayoutHelper.setWeights(new float[]{50,50});//设置每行中 每个网格宽度 占 每行总宽度 的比例
+        SixgridLayoutHelper.setVGap(20);// 控制子元素之间的垂直间距
+        SixgridLayoutHelper.setHGap(20);// 控制子元素之间的水平间距
+        SixgridLayoutHelper.setAutoExpand(false);//是否自动填充空白区域
+        SixgridLayoutHelper.setSpanCount(1);// 设置每行多少个网格
+        gridLayoutSixAdapter = new GridLayoutSixAdapter(hotGoodsListDTOS, getContext(), SixgridLayoutHelper);
+
+        //专题精选
+        SingleLayoutHelper singleLayoutHelper1 = new SingleLayoutHelper();
+        TitleAdapter titleAdapter = new TitleAdapter("专题精选", singleLayoutHelper1);
+//第七行
+        topicListDTOS = new ArrayList<>();
+        LinearLayoutHelper linearLayoutHelper = new LinearLayoutHelper();
+        horizontalAdapter = new HorizontalAdapter(getContext(), linearLayoutHelper, topicListDTOS);
         //设置适配器
         DelegateAdapter delegateAdapter = new DelegateAdapter(virtualLayoutManager, false);
         delegateAdapter.addAdapter(singleAdapter);
@@ -112,6 +146,10 @@ public class HomeFragment extends BaseFragment<HomePresenter>implements HomeCont
         delegateAdapter.addAdapter(singleThreeAdapter);
         delegateAdapter.addAdapter(singleFourAdapter);
         delegateAdapter.addAdapter(gridLayoutAdapter);
+        delegateAdapter.addAdapter(singleSixAdapter);
+        delegateAdapter.addAdapter(gridLayoutSixAdapter);
+        delegateAdapter.addAdapter(titleAdapter);
+        delegateAdapter.addAdapter(horizontalAdapter);
         rel.setLayoutManager(virtualLayoutManager);
         rel.setAdapter(delegateAdapter);
     }
@@ -136,9 +174,13 @@ public class HomeFragment extends BaseFragment<HomePresenter>implements HomeCont
         dtos.addAll(bean.getData().getBanner());
         channelDTOS.addAll(bean.getData().getChannel());
         newGoodsListDTOS.addAll(bean.getData().getNewGoodsList());
+        hotGoodsListDTOS.addAll(bean.getData().getHotGoodsList());
+        topicListDTOS.addAll(bean.getData().getTopicList());
        // Toast.makeText(getContext(), dtos.get(0).getImage_url().toString(), Toast.LENGTH_SHORT).show();
         singleTwoAdapter.notifyDataSetChanged();
         singleThreeAdapter.notifyDataSetChanged();
         gridLayoutAdapter.notifyDataSetChanged();
+        gridLayoutSixAdapter.notifyDataSetChanged();
+        horizontalAdapter.notifyDataSetChanged();
     }
 }
